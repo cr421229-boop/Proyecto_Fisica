@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Movimiento</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#4facfe,#00f2fe);
+    text-align: center;
+    padding: 40px;
+}
+
+h1,h2{
+    color:white;
+}
+
+button{
+    padding:12px 20px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    background:#ff9800;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#e68900;
+}
+
+input,select{
+    padding:10px;
+    margin:10px;
+    border-radius:8px;
+    border:none;
+}
+
+.container{
+    background:rgba(255,255,255,0.15);
+    padding:30px;
+    border-radius:15px;
+    display:inline-block;
+}
+
+#resultado{
+    color:white;
+    font-size:22px;
+}
+
+.unidades{
+color:white;
+font-size:14px;
+margin-bottom:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="inicio">
+
+<h1>Calculadora de Movimiento</h1>
+
+<div class="unidades">
+Sistema Internacional de Unidades (SI)<br>
+Distancia: metros (m) |
+Velocidad: m/s |
+Tiempo: s |
+Aceleración: m/s²
+</div>
+
+<p>Selecciona el tipo de movimiento</p>
+
+<button onclick="mostrarMRU()">MRU</button>
+<button onclick="mostrarMRUA()">MRUA</button>
+
+</div>
+
+
+<!-- MRU -->
+
+<div id="mru" style="display:none">
+
+<h2>Movimiento Rectilíneo Uniforme (MRU)</h2>
+
+<p>d = v * t</p>
+<p>v = d / t</p>
+<p>t = d / v</p>
+
+<select id="opcionMRU">
+<option value="">Selecciona</option>
+<option value="1">Distancia (m)</option>
+<option value="2">Velocidad (m/s)</option>
+<option value="3">Tiempo (s)</option>
+</select>
+
+<button onclick="mostrarInputsMRU()">Continuar</button>
+
+<div id="inputsMRU"></div>
+
+<h3 id="resultadoMRU"></h3>
+
+<button onclick="volver()">Volver</button>
+
+</div>
+
+
+<!-- MRUA -->
+
+<div id="mrua" style="display:none">
+
+<h2>Movimiento Rectilíneo Uniformemente Acelerado (MRUA)</h2>
+
+<p>Vf = Vo + a*t</p>
+<p>a = (Vf - Vo) / t</p>
+<p>x = Vo*t + (a*t²)/2</p>
+<p>x = ((Vf + Vo)/2) * t</p>
+<p>Vf² = Vo² + 2*a*x</p>
+
+<select id="opcionMRUA">
+<option value="">Selecciona</option>
+<option value="1">Velocidad Final (m/s)</option>
+<option value="2">Aceleración (m/s²)</option>
+<option value="3">Distancia (m)</option>
+<option value="4">Distancia promedio (m)</option>
+<option value="5">Velocidad final con distancia (m/s)</option>
+</select>
+
+<button onclick="mostrarInputsMRUA()">Continuar</button>
+
+<div id="inputsMRUA"></div>
+
+<h3 id="resultadoMRUA"></h3>
+
+<button onclick="volver()">Volver</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+function mostrarMRU(){
+document.getElementById("inicio").style.display="none";
+document.getElementById("mru").style.display="block";
+}
+
+function mostrarMRUA(){
+document.getElementById("inicio").style.display="none";
+document.getElementById("mrua").style.display="block";
+}
+
+function volver(){
+document.getElementById("inicio").style.display="block";
+document.getElementById("mru").style.display="none";
+document.getElementById("mrua").style.display="none";
+}
+
+
+/* MRU */
+
+function mostrarInputsMRU(){
+
+let op=document.getElementById("opcionMRU").value;
+let div=document.getElementById("inputsMRU");
+
+div.innerHTML="";
+
+if(op=="1"){
+div.innerHTML=`
+<input id="v" placeholder="Velocidad (m/s)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="distancia()">Calcular</button>
+`;
+}
+
+else if(op=="2"){
+div.innerHTML=`
+<input id="d" placeholder="Distancia (m)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="velocidad()">Calcular</button>
+`;
+}
+
+else if(op=="3"){
+div.innerHTML=`
+<input id="d" placeholder="Distancia (m)">
+<input id="v" placeholder="Velocidad (m/s)">
+<button onclick="tiempo()">Calcular</button>
+`;
+}
+
+}
+
+function distancia(){
+let v=parseFloat(document.getElementById("v").value);
+let t=parseFloat(document.getElementById("t").value);
+document.getElementById("resultadoMRU").innerHTML="Distancia = "+(v*t)+" m";
+}
+
+function velocidad(){
+let d=parseFloat(document.getElementById("d").value);
+let t=parseFloat(document.getElementById("t").value);
+document.getElementById("resultadoMRU").innerHTML="Velocidad = "+(d/t)+" m/s";
+}
+
+function tiempo(){
+let d=parseFloat(document.getElementById("d").value);
+let v=parseFloat(document.getElementById("v").value);
+document.getElementById("resultadoMRU").innerHTML="Tiempo = "+(d/v)+" s";
+}
+
+
+/* MRUA */
+
+function mostrarInputsMRUA(){
+
+let op=document.getElementById("opcionMRUA").value;
+let div=document.getElementById("inputsMRUA");
+
+div.innerHTML="";
+
+if(op=="1"){
+div.innerHTML=`
+<input id="vo" placeholder="Velocidad inicial (m/s)">
+<input id="a" placeholder="Aceleración (m/s²)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="vf()">Calcular</button>
+`;
+}
+
+else if(op=="2"){
+div.innerHTML=`
+<input id="vf" placeholder="Velocidad final (m/s)">
+<input id="vo" placeholder="Velocidad inicial (m/s)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="aceleracion()">Calcular</button>
+`;
+}
+
+else if(op=="3"){
+div.innerHTML=`
+<input id="vo" placeholder="Velocidad inicial (m/s)">
+<input id="a" placeholder="Aceleración (m/s²)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="distancia1()">Calcular</button>
+`;
+}
+
+else if(op=="4"){
+div.innerHTML=`
+<input id="vf" placeholder="Velocidad final (m/s)">
+<input id="vo" placeholder="Velocidad inicial (m/s)">
+<input id="t" placeholder="Tiempo (s)">
+<button onclick="distancia2()">Calcular</button>
+`;
+}
+
+else if(op=="5"){
+div.innerHTML=`
+<input id="vo" placeholder="Velocidad inicial (m/s)">
+<input id="a" placeholder="Aceleración (m/s²)">
+<input id="x" placeholder="Distancia (m)">
+<button onclick="vf2()">Calcular</button>
+`;
+}
+
+}
+
+function vf(){
+let vo=parseFloat(document.getElementById("vo").value);
+let a=parseFloat(document.getElementById("a").value);
+let t=parseFloat(document.getElementById("t").value);
+
+document.getElementById("resultadoMRUA").innerHTML="Velocidad final = "+(vo + a*t)+" m/s";
+}
+
+function aceleracion(){
+let vf=parseFloat(document.getElementById("vf").value);
+let vo=parseFloat(document.getElementById("vo").value);
+let t=parseFloat(document.getElementById("t").value);
+
+document.getElementById("resultadoMRUA").innerHTML="Aceleración = "+((vf-vo)/t)+" m/s²";
+}
+
+function distancia1(){
+let vo=parseFloat(document.getElementById("vo").value);
+let a=parseFloat(document.getElementById("a").value);
+let t=parseFloat(document.getElementById("t").value);
+
+document.getElementById("resultadoMRUA").innerHTML="Distancia = "+(vo*t + (a*t*t)/2)+" m";
+}
+
+function distancia2(){
+let vf=parseFloat(document.getElementById("vf").value);
+let vo=parseFloat(document.getElementById("vo").value);
+let t=parseFloat(document.getElementById("t").value);
+
+document.getElementById("resultadoMRUA").innerHTML="Distancia = "+(((vf+vo)/2)*t)+" m";
+}
+
+function vf2(){
+let vo=parseFloat(document.getElementById("vo").value);
+let a=parseFloat(document.getElementById("a").value);
+let x=parseFloat(document.getElementById("x").value);
+
+document.getElementById("resultadoMRUA").innerHTML="Velocidad final = "+Math.sqrt(vo*vo + 2*a*x)+" m/s";
+}
+
+</script>
+
+</body>
+</html>
